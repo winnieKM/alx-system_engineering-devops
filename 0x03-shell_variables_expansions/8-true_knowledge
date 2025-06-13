@@ -1,0 +1,5 @@
+#!/bin/bash
+# Adds two environment variable values and prints the result
+
+result=$((TRUEKNOWLEDGE + ADDITIONAL))
+echo "$result"

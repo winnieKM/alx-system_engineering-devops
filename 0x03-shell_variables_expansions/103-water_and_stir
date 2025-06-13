@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Convert WATER from base 'water' to decimal
+num1=$(echo "$WATER" | tr 'water' '01234')
+
+# Convert STIR from base 'stir.' to decimal
+num2=$(echo "$STIR" | tr 'stir.' '01234')
+
+# Add the two numbers (they are in base-5 so interpret as base-5 first)
+dec1=$((5#$num1))
+dec2=$((5#$num2))
+sum=$((dec1 + dec2))
+
+# Convert sum to decimal digits → map to 'bestcholhc'
+echo "$sum" | tr '0123456789' 'bestcholhc'

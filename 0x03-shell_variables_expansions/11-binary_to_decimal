@@ -1,0 +1,4 @@
+#!/bin/bash
+# Convert binary (base 2) to decimal (base 10)
+
+echo "$((2#$1))"

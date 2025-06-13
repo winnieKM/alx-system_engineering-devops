@@ -1,0 +1,5 @@
+#!/bin/bash
+# Divide POWER by DIVIDE and print the result
+
+result=$((POWER / DIVIDE))
+echo "$result"
