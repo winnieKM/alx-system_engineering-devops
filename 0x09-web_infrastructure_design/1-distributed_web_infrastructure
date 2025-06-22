@@ -1,0 +1,40 @@
+1-distributed_web_infrastructure
+================================
+
+📌 Infrastructure Overview:
+This is a more reliable and scalable setup than Task 0. It uses 3 servers: one for load balancing and two to handle website requests.
+
+🧭 How it Works:
+1. A user types www.foobar.com in their browser.
+2. DNS resolves the domain to the IP of the **load balancer**.
+3. The load balancer sends the request to one of two application servers.
+4. Each app server runs Nginx and hosts the same codebase.
+5. The app server queries the MySQL database and returns a response.
+6. The user receives the webpage in their browser.
+
+🖼 Diagram (ASCII):
+
+        [ User ]
+           |
+           v
+   +-----------------+
+   | Load Balancer   |  --> Round Robin
+   |    (HAProxy)    |
+   +--------+--------+
+            |
+      +-----+-----+
+      |           |
+      v           v
++------------+ +------------+
+| App Server | | App Server |
+|    #1      | |    #2      |
+| (Nginx +   | | (Nginx +   |
+|  Code)     | |  Code)     |
++-----+------+ +-----+------+
+      |              |
+      +------+-------+
+             |
+             v
+     +----------------+
+     | MySQL Database |
+     +----------------+
