@@ -1,0 +1,44 @@
+3-scale_up
+==========
+
+📌 Infrastructure Overview:
+This setup scales the infrastructure by giving each major component its own server and making the load balancer more reliable via clustering.
+
+🧭 How it Works:
+1. The user opens www.foobar.com in their browser.
+2. DNS resolves the domain to the IP of **Load Balancer #1**.
+3. If Load Balancer #1 fails, **Load Balancer #2** takes over (clustered setup).
+4. The active load balancer routes traffic to the dedicated **Web Server**.
+5. The Web Server (Nginx) handles static files and passes dynamic requests to the **Application Server**.
+6. The Application Server processes the logic and fetches data from the **Database Server** (MySQL).
+7. Monitoring and firewalls are set up on all machines.
+
+🧠 Why Add These Components:
+
+🔁 Second Load Balancer (HAProxy):
+- Clusters with the first one for redundancy.
+- Prevents a single point of failure at the load balancer level.
+
+🌐 Web Server (Nginx):
+- Handles static content like images, JS, and CSS.
+- Receives requests and passes them to the backend (app server).
+
+🧠 Application Server:
+- Processes dynamic logic (e.g., logins, forms, dashboards).
+- Allows the web server to remain fast and focused.
+
+🗃️ Database Server:
+- Isolated to handle all reads and writes securely.
+- Prevents overload from app/web processes.
+
+🔥 Firewalls:
+- Each server has its own firewall to restrict access to only necessary ports.
+
+🖥 Monitoring:
+- Monitoring clients track system health and performance metrics across all servers.
+
+⚠️ Why This Infrastructure Scales Better:
+- Each component can be independently scaled (e.g., add more app servers without touching the DB).
+- Load balancer redundancy improves uptime.
+- Separation of concerns (web vs app vs database) reduces bottlenecks.
+
