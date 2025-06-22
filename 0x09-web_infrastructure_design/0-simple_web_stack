@@ -1,0 +1,58 @@
+# 0-simple_web_stack
+
+📌 Infrastructure Overview:
+This is a simple web infrastructure that hosts the website www.foobar.com. It uses a single server with Nginx as a web server, an application server to run dynamic content, and a MySQL database to store data.
+
+🧭 How it works:
+
+1. A user opens their browser and types in: www.foobar.com.
+2. The domain name system (DNS) resolves www.foobar.com to the IP address `8.8.8.8`.
+3. The request reaches the server at 8.8.8.8, where Nginx is running.
+4. Nginx (the web server) handles the incoming HTTP request.
+5. If it’s a static file (e.g., image, CSS), Nginx serves it directly.
+6. If it’s a dynamic request (like login or form), Nginx forwards it to the application server.
+7. The application server processes the request, queries the MySQL database if needed, and sends the result back to Nginx.
+8. Nginx sends the final response back to the user’s browser.
+
+🔧 Components Used:
+
+- **1 Server**: A single physical or virtual machine at IP `8.8.8.8`.
+- **1 Web Server (Nginx)**: Serves web pages and forwards requests.
+- **1 Application Server**: Runs backend code (e.g., PHP, Node.js, Python).
+- **1 Application Codebase**: The website logic and files.
+- **1 Database (MySQL)**: Stores user data, site content, etc.
+- **1 Domain (foobar.com)**: Configured with a `www` subdomain that maps to the server IP via DNS A record.
+
+🧠 Key Concepts:
+
+- **What is a server?**  
+  A server is a computer or program that provides services to other computers, called clients.
+
+- **Role of the domain name:**  
+  Converts a human-friendly name (`www.foobar.com`) into an IP address so the browser knows where to connect.
+
+- **What DNS record is `www`?**  
+  The `www` in `www.foobar.com` is typically an **A record** that points to the server’s public IP address.
+
+- **Role of the web server (Nginx):**  
+  Accepts HTTP requests from users, serves static files, and passes dynamic requests to the application server.
+
+- **Role of the application server:**  
+  Runs the code that powers the website's logic. It processes user inputs and fetches or stores data in the database.
+
+- **Role of the database (MySQL):**  
+  Stores persistent information like user accounts, articles, orders, etc.
+
+- **What protocol does the server use to communicate with users?**  
+  The server uses **HTTP (Hypertext Transfer Protocol)** over the internet.
+
+⚠️ Infrastructure Weaknesses:
+
+- **Single Point of Failure (SPOF):**  
+  If this one server goes down, the entire site becomes unavailable.
+
+- **Downtime During Maintenance:**  
+  Restarting Nginx or updating app code means users experience interruptions.
+
+- **Scalability Issues:**  
+  One server cannot handle large traffic volumes or parallel requests effectively.
