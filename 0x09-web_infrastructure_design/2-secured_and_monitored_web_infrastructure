@@ -1,0 +1,83 @@
+2-secured_and_monitored_web_infrastructure
+==========================================
+
+📌 Infrastructure Overview:
+This setup builds on Task 1 and includes security and monitoring features. It ensures the website is encrypted (HTTPS), protected (firewalls), and monitored (log and performance tracking).
+
+🧭 How it Works:
+1. A user types www.foobar.com in their browser.
+2. DNS resolves the domain to the IP of the load balancer.
+3. The load balancer has an SSL certificate to support HTTPS, so the user connects securely.
+4. The load balancer forwards traffic using the Round Robin algorithm to one of the two app servers.
+5. Each app server runs Nginx and hosts the same codebase.
+6. App servers connect to the MySQL database to fetch or store data.
+7. Firewalls are set up on all servers to block unauthorized access.
+8. Monitoring clients run on each server and send system data (CPU, memory, logs, errors) to a monitoring dashboard or service.
+
+🖼 Diagram (ASCII):
+
+        [ User ]
+           |
+        HTTPS 🔒
+           |
+   +--------------------+
+   | Load Balancer 🔥 🖥 |  --> Round Robin
+   |  (HAProxy + SSL)   |
+   +--------+-----------+
+            |
+     +------+------+
+     |             |
+     v             v
++-------------+ +-------------+
+| App Server  | | App Server  |
+|   #1 🔥 🖥    | |   #2 🔥 🖥    |
+| (Nginx + App)| | (Nginx + App)|
++------+------+ +------+------+
+       |               |
+       +------+--------+
+              |
+              v
+     +-----------------+
+     | MySQL Database 🔥 🖥 |
+     +-----------------+
+
+🧠 Component Explanations:
+
+🔥 Firewalls:
+- Protect each server by filtering incoming and outgoing traffic.
+- Only necessary ports (like 443 for HTTPS, 3306 for MySQL) are allowed.
+- Prevents unauthorized access or malicious activity.
+
+🔒 SSL Certificate (HTTPS):
+- Ensures traffic between the user and the website is encrypted.
+- Protects sensitive information (e.g., passwords, payment info) from being intercepted.
+- HTTPS also boosts user trust and SEO rankings.
+
+🖥 Monitoring Clients:
+- Installed on each server (e.g., Sumologic agent, Datadog agent, Prometheus node exporter).
+- Collect data like CPU usage, memory usage, traffic logs, and errors.
+- Helps detect issues early (e.g., high traffic, server down, errors).
+
+📊 How Monitoring Works:
+- Each server sends its data to a central monitoring system (dashboard).
+- Metrics like QPS (Queries Per Second) for the web server can be tracked using built-in logs or web server tools like Nginx status module or HAProxy stats.
+
+🛠 Example: How to monitor QPS (Queries Per Second)
+- Enable Nginx access logs or HAProxy stats page.
+- Use the monitoring agent to track and send the logs to a dashboard.
+- On the dashboard, filter for requests per second metric and set alerts if too high.
+
+⚠️ Issues with This Infrastructure:
+
+1. **SSL Termination at the Load Balancer Level**:
+   - If HTTPS ends at the load balancer and the internal connection to app servers is HTTP, traffic can still be sniffed internally.
+   - Solution: Use HTTPS between load balancer and app servers too.
+
+2. **Only One MySQL Write Server (Primary)**:
+   - If the primary database crashes, the whole system can't write data.
+   - Solution: Add a failover replica or make the DB cluster write-capable.
+
+3. **All Servers Have All Roles (Monolithic Setup)**:
+   - Each app server handles both web and app logic. This limits flexibility.
+   - Solution: Use microservices or separate roles in larger systems.
+
