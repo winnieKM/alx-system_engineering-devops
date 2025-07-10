@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+# shellcheck disable=SC2086
+
+domain=$1
+subdomain=$2
+
+# Function to get DNS info
+get_record_info() {
+  local name=$1
+  result=$(dig ${name}.${domain} +short)
+  if [ -n "$result" ]; then
+    echo "The subdomain ${name} is a A record and points to ${result}"
+  else
+    echo "No A record found for ${name}.${domain}"
+  fi
+}
+
+# Check if domain is provided
+if [ -z "$domain" ]; then
+  echo "Usage: $0 domain [subdomain]"
+  exit 1
+fi
+
+# If subdomain is given, only check that
+if [ -n "$subdomain" ]; then
+  get_record_info $subdomain
+else
+  # If subdomain is not given, check all 4 in order
+  for sub in www lb-01 web-01 web-02; do
+    get_record_info $sub
+  done
+fi
