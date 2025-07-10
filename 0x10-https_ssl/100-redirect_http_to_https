@@ -1,4 +1,5 @@
-# HAProxy SSL Termination Configuration
+# 100-redirect_http_to_https
+# HAProxy configuration for HTTPS redirection
 
 global
     log /dev/log local0
@@ -29,6 +30,10 @@ defaults
     errorfile 502 /etc/haproxy/errors/502.http
     errorfile 503 /etc/haproxy/errors/503.http
     errorfile 504 /etc/haproxy/errors/504.http
+
+frontend http_in
+    bind *:80
+    redirect scheme https code 301 if !{ ssl_fc }
 
 frontend https_in
     bind *:443 ssl crt /etc/ssl/private/haproxy.pem
